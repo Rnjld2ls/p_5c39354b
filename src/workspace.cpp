@@ -17,7 +17,7 @@ Workspace::~Workspace() {
 
 }
 
-void Workspace::init(const char *uart_name, const FileStorage &file_storage) {
+void Workspace::init(const string uart_name, const FileStorage &file_storage) {
     armor_detector.init(file_storage);
     target_solver.init(file_storage);
     angle_solver.init();
@@ -25,7 +25,7 @@ void Workspace::init(const char *uart_name, const FileStorage &file_storage) {
 #ifndef TEST
     mv_camera.open(640, 480, 400);
 #ifndef CAMERA_ONLY
-    serial_port.init(uart_name);
+    serial_port.open(uart_name);
 #endif
 #endif
 
@@ -126,6 +126,7 @@ void Workspace::imageProcessingFunc() {
 
 #elif TEST == 2
             cap >> current_frame_;
+            if (current_frame_.empty())    exit(0);
 #endif  // 这里不加#else因上面已经判断过
 #ifdef SHOW_IMAGE
             src = current_frame_.clone();
@@ -143,6 +144,7 @@ void Workspace::imageProcessingFunc() {
 
                 armor_detector.run(current_frame_, read_pack_.enemy, target_armor_);
                 target_solver.run(target_armor_, target_);
+                predict.run(Point3f(target_.x, target_.y, target_.z), send_pack_.yaw, send_pack_.pitch, target_.x, target_.y, target_.z);
                 angle_solver.run(target_.x, target_.y, target_.z, 20, send_pack_.yaw, send_pack_.pitch);
 
             } else if (read_pack_.mode == Mode::RUNE) {

@@ -23,6 +23,7 @@
 #include "runesolver.h"
 #include "mvcamera.h"
 #include "serialport.h"
+#include "predict.h"
 #ifdef RUNNING_TIME
 #include "timer.h"
 #endif
@@ -56,6 +57,7 @@ private:
     MVCamera mv_camera;
     SerialPort serial_port;
     RuneSolver rune_solver;
+    Predict predict;
 
     vector<Mat> image_buffer_;
     int max_image_buffer_size_;
@@ -68,7 +70,7 @@ private:
 public:
     Workspace();
     ~Workspace();
-    void init(const char *uart_name, const FileStorage &file_storage);
+    void init(const string uart_name, const FileStorage &file_storage);
     void run();
 
 private:

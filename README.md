@@ -19,7 +19,5 @@ make
 ```
 
 ## update
-- ${update time}
-    - ${update 1}
-    - ${update 2}
-    - ...
+- ${2019.10.19}
+    - ${add predict}
